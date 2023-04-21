@@ -14,9 +14,8 @@ import java.util.stream.Collectors;
 
 public final class LettersCounter {
     public void findVowelsInConsole(File name) {
-        try {
-            Scanner scanner = new Scanner(Files.newInputStream(
-                    name.toPath()), StandardCharsets.UTF_8);
+        try (Scanner scanner = new Scanner(Files.newInputStream(
+                name.toPath()), StandardCharsets.UTF_8)) {
             scanner.useDelimiter("(?<=\\.)|(?<=\\?)|(?<=!)");
             List<Character> list = new LinkedList<Character>() {{
                 add('a'); add('e'); add('i'); add('o'); add('u'); add('y');
@@ -42,15 +41,14 @@ public final class LettersCounter {
                         iterator, vowels.get());
             }
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
     }
     public void findVowelsInFile(File name) {
-        try {
-            Scanner scanner = new Scanner(Files.newInputStream(
-                    name.toPath()), StandardCharsets.UTF_8);
-            FileWriter writer = new FileWriter("Vowels.txt",
-                    StandardCharsets.UTF_8);
+        try (Scanner scanner = new Scanner(Files.newInputStream(
+                name.toPath()), StandardCharsets.UTF_8);
+             FileWriter writer = new FileWriter("Vowels.txt",
+                     StandardCharsets.UTF_8)) {
             scanner.useDelimiter("(?<=\\.)|(?<=\\?)|(?<=!)");
             List<Character> list = new LinkedList<Character>() {{
                 add('a'); add('e'); add('i'); add('o'); add('u'); add('y');
@@ -74,9 +72,13 @@ public final class LettersCounter {
                 writer.write(String.format("%s%n%d Sentence: %d vowels%n",
                         words, iterator, vowels.get()));
             }
-            writer.close();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            e.printStackTrace();
         }
+    }
+    public static void main(String[] args) {
+        LettersCounter counter = new LettersCounter();
+        counter.findVowelsInConsole(new File("Sentences.txt"));
+        counter.findVowelsInFile(new File("Sentences.txt"));
     }
 }
