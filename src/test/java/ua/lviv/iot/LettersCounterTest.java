@@ -7,6 +7,8 @@ import org.junit.jupiter.api.Test;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 
 public class LettersCounterTest {
     public LettersCounter counter = new LettersCounter();
@@ -14,6 +16,16 @@ public class LettersCounterTest {
     @BeforeEach
     public void initialize() {
         System.setOut(new PrintStream(outputStream));
+    }
+    @Test
+    public void InTextTest() {
+        String sentence = "The sun was shining brightly in the clear blue sky, and a gentle breeze rustled the leaves on the trees."
+                + "Birds chirped merrily as they flitted from branch to branch, and the scent of freshly cut grass filled the air."
+                + "It was a perfect day for a picnic in the park.";
+        Map<Integer, Integer> expect = new HashMap<>(){{
+            put(1, 31); put(2, 28); put(3, 14);
+        }};
+        Assertions.assertEquals(expect, counter.findVovelsInSentences(sentence));
     }
     @Test
     public void InFileTest() throws IOException {

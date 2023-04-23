@@ -11,6 +11,8 @@
               files="."/>
     <suppress checks="MissingJavadocMethod"
               files="."/>
+    <suppress checks="JavadocVariable"
+              files="."/>
     <suppress checks="FinalParameters"
               files="."/>
 </suppressions>
