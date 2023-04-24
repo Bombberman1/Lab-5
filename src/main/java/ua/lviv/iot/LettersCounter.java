@@ -20,23 +20,26 @@ import java.util.stream.Collectors;
 
 public final class LettersCounter {
     public static final Pattern SENTENCE_END_PATTERN =
-            Pattern.compile("(\\b|\\.|!|\\?).*?(\\.|!|\\?)");
+            Pattern.compile("[A-Za-z].*?[.!?]");
     public static final Pattern VOVELS_PATTERN =
             Pattern.compile("(?i)[aoueiy]");
     public Map<Integer, Integer> findVovelsInSentences(String text) {
-        Map<Integer, Integer> resultMap = new HashMap<>();
-        Matcher sentenceMatcher = SENTENCE_END_PATTERN.matcher(text);
-        int sentencesCounter = 0;
-        while (sentenceMatcher.find()) {
-            String sentence = sentenceMatcher.group();
-            Matcher vovelCountMantcher = VOVELS_PATTERN.matcher(sentence);
-            int vowels = 0;
-            while (vovelCountMantcher.find()) {
-                vowels++;
+        if (!text.isEmpty()) {
+            Map<Integer, Integer> resultMap = new HashMap<>();
+            Matcher sentenceMatcher = SENTENCE_END_PATTERN.matcher(text);
+            int sentencesCounter = 0;
+            while (sentenceMatcher.find()) {
+                String sentence = sentenceMatcher.group();
+                Matcher vovelCountMantcher = VOVELS_PATTERN.matcher(sentence);
+                int vowels = 0;
+                while (vovelCountMantcher.find()) {
+                    vowels++;
+                }
+                resultMap.put(++sentencesCounter, vowels);
             }
-            resultMap.put(++sentencesCounter, vowels);
+            return resultMap;
         }
-        return resultMap;
+        return null;
     }
     public void findVowelsInConsole(File name) {
         try (Scanner scanner = new Scanner(Files.newInputStream(
@@ -49,7 +52,7 @@ public final class LettersCounter {
             while (scanner.hasNext()) {
                 AtomicInteger vowels = new AtomicInteger(0);
                 String sentence = scanner.next();
-                String words = Arrays.stream(sentence.split(" |(?<=,)"))
+                String words = Arrays.stream(sentence.split("\\s+"))
                         .filter(s -> (s != null && s.length() > 0))
                         .peek(s -> {
                             for (Character letter : s.toLowerCase()
@@ -82,7 +85,7 @@ public final class LettersCounter {
             while (scanner.hasNext()) {
                 AtomicInteger vowels = new AtomicInteger(0);
                 String sentence = scanner.next();
-                String words = Arrays.stream(sentence.split(" |(?<=,)"))
+                String words = Arrays.stream(sentence.split("\\s+"))
                         .filter(s -> {
                             if (s != null && s.length() > 0) {
                                 for (Character letter : s.toLowerCase()

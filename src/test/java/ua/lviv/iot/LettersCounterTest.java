@@ -28,6 +28,26 @@ public class LettersCounterTest {
         Assertions.assertEquals(expect, counter.findVovelsInSentences(sentence));
     }
     @Test
+    public void unusualTextFormatInStringTest() {
+        String sentence = "Sample text  .!? ? Another text...\nLineFeed text example     !";
+        Map<Integer, Integer> expect = new HashMap<>(){{
+            put(1, 3); put(2, 4); put(3, 8);
+        }};
+        Assertions.assertEquals(expect, counter.findVovelsInSentences(sentence));
+    }
+    @Test
+    public void emptyStringInTextTest() {
+        Assertions.assertNull(counter.findVovelsInSentences(""));
+    }
+    @Test
+    public void zeroVowelsIgnoringIntegersInTextTest() {
+        String sentence = "Tqw  zxn tklll.11212. Plz trg !";
+        Map<Integer, Integer> expect = new HashMap<>(){{
+            put(1, 0); put(2, 0);
+        }};
+        Assertions.assertEquals(expect, counter.findVovelsInSentences(sentence));
+    }
+    @Test
     public void InFileTest() throws IOException {
         counter.findVowelsInFile(new File("Sentences.txt"));
         Assertions.assertEquals(Files.toString(new File("Expect.txt"), StandardCharsets.UTF_8), Files.toString(new File("Vowels.txt"), StandardCharsets.UTF_8));
